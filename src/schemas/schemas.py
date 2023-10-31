@@ -3,6 +3,7 @@ from fastapi_users import schemas
 from pydantic import BaseModel
 from datetime import datetime
 from typing import Optional
+from enum import Enum
 
 
 class UserRead(schemas.BaseUser[int]):
@@ -36,9 +37,16 @@ class UserSignIn(BaseModel):
     password: str
 
 
+class TransportType(Enum):
+    car = "car"
+    bike = "bike"
+    scooter = "scooter"
+    all = "all"
+
+
 class TransportCreate(BaseModel):
     canBeRented: bool
-    transportType: str
+    transportType: TransportType
     model: str
     color: str
     identifier: str
@@ -52,7 +60,7 @@ class TransportCreate(BaseModel):
 class TransportCreateAdmin(BaseModel):
     ownerId: int
     canBeRented: bool
-    transportType: str
+    transportType: TransportType
     model: str
     color: str
     identifier: str
@@ -63,8 +71,13 @@ class TransportCreateAdmin(BaseModel):
     dayPrice: Optional[float] = None
 
 
+class RentType(Enum):
+    minute = "minute"
+    day = "day"
+
+
 class RentCreate(BaseModel):
-    rent_type: str
+    rent_type: RentType
 
 
 class RentCreateAdmin(BaseModel):
@@ -73,6 +86,6 @@ class RentCreateAdmin(BaseModel):
     timeStart: str
     timeEnd: Optional[str] = None
     priceOfUnit: float
-    priceType: str
+    priceType: RentType
     finalPrice: Optional[float] = None
 
